@@ -24,6 +24,7 @@ class FavoritesViewController: UIViewController {
     func configureUI(){
         view.backgroundColor = .systemGray6
         navigationItem.title = "Favorites"
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
 
 }

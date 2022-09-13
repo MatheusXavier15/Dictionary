@@ -24,6 +24,7 @@ class HistoryViewController: UIViewController {
     func configureUI(){
         view.backgroundColor = .systemGray6
         navigationItem.title = "History"
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
 
 }
