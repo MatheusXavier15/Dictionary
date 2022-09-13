@@ -8,22 +8,35 @@
 import UIKit
 
 class WordDetailsViewController: UIViewController {
-
+    
+    // MARK: -> Properties
+    var word: String?
+    private var wordInfo: Word?
+    
+    // MARK: -> LifeCycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        self.loadWord()
+        self.configureUI()
+    }
+    // MARK: -> Selectors
+    
+    // MARK: -> Configure/Helpers
+    
+    func loadWord(){
+        Services.shared.fetchWord(word!) { word, error in
+            if let error = error {
+                print(error.localizedDescription)
+            }
+            
+        }
     }
     
+    func configureUI(){
 
-    /*
-    // MARK: - Navigation
+        view.backgroundColor = .systemGray6
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
     }
-    */
-
+    
 }

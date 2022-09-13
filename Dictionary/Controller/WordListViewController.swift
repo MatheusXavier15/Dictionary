@@ -58,4 +58,11 @@ extension WordListViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let wordPages = WordPagesViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
+        wordPages.initialIndex = indexPath.row
+        wordPages.wordsContent = wordList.words
+        navigationController?.pushViewController(wordPages, animated: true)
+        return
+    }
 }
