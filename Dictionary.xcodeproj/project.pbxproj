@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0626D12E28D0BC2F00907CA6 /* HistoryDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0626D12D28D0BC2F00907CA6 /* HistoryDataModel.swift */; };
+		0626D13028D0C3BF00907CA6 /* WordsDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0626D12F28D0C3BF00907CA6 /* WordsDataModel.swift */; };
+		0626D13228D0E2C900907CA6 /* FavoritesDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0626D13128D0E2C900907CA6 /* FavoritesDataModel.swift */; };
+		0626D13628D11A5500907CA6 /* FavoritesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0626D13528D11A5500907CA6 /* FavoritesTableViewCell.swift */; };
+		0626D13828D11EA900907CA6 /* HistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0626D13728D11EA900907CA6 /* HistoryTableViewCell.swift */; };
 		062F66DF28D00EE000A0C4CD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062F66DE28D00EE000A0C4CD /* AppDelegate.swift */; };
 		062F66E128D00EE000A0C4CD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062F66E028D00EE000A0C4CD /* SceneDelegate.swift */; };
 		062F66E328D00EE000A0C4CD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 062F66E228D00EE000A0C4CD /* ViewController.swift */; };
@@ -62,6 +67,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0626D12D28D0BC2F00907CA6 /* HistoryDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDataModel.swift; sourceTree = "<group>"; };
+		0626D12F28D0C3BF00907CA6 /* WordsDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordsDataModel.swift; sourceTree = "<group>"; };
+		0626D13128D0E2C900907CA6 /* FavoritesDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesDataModel.swift; sourceTree = "<group>"; };
+		0626D13528D11A5500907CA6 /* FavoritesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesTableViewCell.swift; sourceTree = "<group>"; };
+		0626D13728D11EA900907CA6 /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
 		062F66DB28D00EE000A0C4CD /* Dictionary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dictionary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		062F66DE28D00EE000A0C4CD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		062F66E028D00EE000A0C4CD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -181,6 +191,8 @@
 			children = (
 				062F674628D0339700A0C4CD /* WordDetails */,
 				062F673E28D02EBC00A0C4CD /* WordListTableViewCell.swift */,
+				0626D13528D11A5500907CA6 /* FavoritesTableViewCell.swift */,
+				0626D13728D11EA900907CA6 /* HistoryTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -205,6 +217,9 @@
 			children = (
 				062F671628D013B600A0C4CD /* WordModel.swift */,
 				062F673A28D0253E00A0C4CD /* WordList.swift */,
+				0626D12D28D0BC2F00907CA6 /* HistoryDataModel.swift */,
+				0626D12F28D0C3BF00907CA6 /* WordsDataModel.swift */,
+				0626D13128D0E2C900907CA6 /* FavoritesDataModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -368,18 +383,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				062F672728D0184200A0C4CD /* Services.swift in Sources */,
+				0626D13028D0C3BF00907CA6 /* WordsDataModel.swift in Sources */,
 				062F674828D0375500A0C4CD /* WordPagesViewController.swift in Sources */,
+				0626D13228D0E2C900907CA6 /* FavoritesDataModel.swift in Sources */,
 				062F673F28D02EBC00A0C4CD /* WordListTableViewCell.swift in Sources */,
 				062F66E328D00EE000A0C4CD /* ViewController.swift in Sources */,
 				062F673B28D0253E00A0C4CD /* WordList.swift in Sources */,
 				062F672B28D0192200A0C4CD /* TabBarViewController.swift in Sources */,
+				0626D13828D11EA900907CA6 /* HistoryTableViewCell.swift in Sources */,
 				062F672328D016A300A0C4CD /* RegistrationViewController.swift in Sources */,
 				062F66E928D00EE000A0C4CD /* Dictionary.xcdatamodeld in Sources */,
 				062F673128D019CE00A0C4CD /* HistoryViewController.swift in Sources */,
+				0626D13628D11A5500907CA6 /* FavoritesTableViewCell.swift in Sources */,
 				062F66DF28D00EE000A0C4CD /* AppDelegate.swift in Sources */,
 				062F674328D0303A00A0C4CD /* Constants.swift in Sources */,
 				062F66E128D00EE000A0C4CD /* SceneDelegate.swift in Sources */,
 				062F672D28D019BF00A0C4CD /* WordListViewController.swift in Sources */,
+				0626D12E28D0BC2F00907CA6 /* HistoryDataModel.swift in Sources */,
 				062F672128D0169900A0C4CD /* LoginViewController.swift in Sources */,
 				062F671728D013B600A0C4CD /* WordModel.swift in Sources */,
 				062F673328D01D1800A0C4CD /* Extensions.swift in Sources */,
