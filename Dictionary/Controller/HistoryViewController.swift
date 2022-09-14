@@ -85,6 +85,14 @@ extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
         cell.delegate = self
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let word = words?[indexPath.row].word
+        let wordView = WordDetailsViewController()
+        wordView.word = word
+        navigationController?.pushViewController(wordView, animated: true)
+        return
+    }
 }
 
 extension HistoryViewController: HistoryListDelegate {

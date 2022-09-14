@@ -19,6 +19,13 @@ class WordListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .systemGray6
+        navigationItem.title = "Word List"
+        navigationController?.navigationBar.prefersLargeTitles = true
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.tableView.reloadData()
         self.configureTableView()
     }
     
@@ -27,10 +34,6 @@ class WordListViewController: UIViewController {
     // MARK: -> Configure/Helpers
     
     func configureUI(){
-        view.backgroundColor = .systemGray6
-        navigationItem.title = "Word List"
-        navigationController?.navigationBar.prefersLargeTitles = true
-        
         self.view.addSubview(tableView)
         tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 15, paddingLeft: 5, paddingBottom: 15, paddingRight: 25)
     }
@@ -49,19 +52,27 @@ class WordListViewController: UIViewController {
 extension WordListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.wordList.words.count
+        return self.wordList.words.count - 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: self.reusableIdentifier, for: indexPath) as! WordListTableViewCell
         cell.word = wordList.words[indexPath.row]
+        cell.state = try? FavoritesDataModel.shared.fetchRegister(withWord: wordList.words[indexPath.row]) != nil ? .fav : .normal
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let wordPages = WordPagesViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
+        let word = wordList.words[indexPath.row]
         wordPages.initialIndex = indexPath.row
         wordPages.wordsContent = wordList.words
+        do {
+            let fav = try? FavoritesDataModel.shared.fetchRegister(withWord: word)
+            try HistoryDataModel.shared.createRegister(wordHistory: WordHistory(word: word, fav: fav != nil ? true : false, date: Date()))
+        } catch {
+            return
+        }
         navigationController?.pushViewController(wordPages, animated: true)
         return
     }

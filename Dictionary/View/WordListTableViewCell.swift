@@ -7,14 +7,35 @@
 
 import UIKit
 
+enum WordFavStatus {
+    case fav
+    case normal
+}
+
 class WordListTableViewCell: UITableViewCell {
+    
     // MARK: -> Properties
+    
+    var state: WordFavStatus? {
+        didSet {
+            switch state {
+            case .normal:
+                self.favBtn.setImage(UIImage(systemName: "heart"), for: .normal)
+            case .fav:
+                self.favBtn.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+            case .none:
+                self.favBtn.setImage(UIImage(systemName: "heart"), for: .normal)
+            }
+        }
+    }
     
     var word: String? {
         didSet {
             self.label.text = word
         }
     }
+    
+//    private var favStatus: WordFavStatus?
     
     private let label: UILabel = {
        let lb = UILabel()
@@ -24,7 +45,14 @@ class WordListTableViewCell: UITableViewCell {
         lb.setDimensions(height: nil, width: 200)
         return lb
     }()
-
+    
+    private lazy var favBtn: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.setImage(UIImage(systemName: "heart"), for: .normal)
+        btn.setDimensions(height: 14, width: 16)
+        btn.addTarget(self, action: #selector(handleToggleBtn), for: .touchUpInside)
+        return btn
+    }()
     
     // MARK: -> LifeCycle
     
@@ -37,6 +65,18 @@ class WordListTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: -> Selectors
+    
+    @objc func handleToggleBtn(){
+        self.favBtn.setImage(UIImage(systemName: state == .normal ? "heart.fill" : "heart"), for: .normal)
+        if state == .normal {
+            try? FavoritesDataModel.shared.createRegister(word: word ?? "")
+        } else {
+            try? FavoritesDataModel.shared.deleteRegister(withWord: word ?? "")
+        }
+        self.state = self.state == .fav ? .normal : .fav
+    }
+    
     // MARK: -> Configure/Helpers
     func configureUI(){
         self.backgroundColor = .systemGray6
@@ -45,5 +85,8 @@ class WordListTableViewCell: UITableViewCell {
         self.addSubview(label)
         label.anchor(left: leftAnchor, paddingLeft: 15)
         label.centerY(inView: self)
+        self.contentView.addSubview(favBtn)
+        favBtn.anchor(right: safeAreaLayoutGuide.rightAnchor, paddingRight: 55)
+        favBtn.centerY(inView: self)
     }
 }

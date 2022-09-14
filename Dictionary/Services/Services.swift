@@ -11,7 +11,8 @@ class Services {
     static let shared = Services()
     
     func fetchWord(_ word: String, completion: @escaping([Word]?, Error?) -> Void) {
-        let url = "https://api.dictionaryapi.dev/api/v2/entries/en/\(word)"
+        var url = "https://api.dictionaryapi.dev/api/v2/entries/en/\(word)"
+        url = url.replacingOccurrences(of: " ", with: "-")
         guard let URL = URL(string: url) else { return }
         
         var request = URLRequest(url: URL)
@@ -35,5 +36,13 @@ class Services {
             }
         }
         httpRequest.resume()
+    }
+    
+    func downloadAudioFromAPI(url: URL, completion: @escaping(URL?)->Void){
+        var downloadTask:URLSessionDownloadTask
+        downloadTask = URLSession.shared.downloadTask(with: url, completionHandler: { (URL, response, error) -> Void in
+            completion(URL)
+        })
+        downloadTask.resume()
     }
 }

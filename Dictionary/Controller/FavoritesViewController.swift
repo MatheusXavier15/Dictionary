@@ -59,6 +59,14 @@ extension FavoritesViewController: UITableViewDelegate, UITableViewDataSource {
         cell.state = .fav
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let word = words?[indexPath.row].word
+        let wordView = WordDetailsViewController()
+        wordView.word = word
+        navigationController?.pushViewController(wordView, animated: true)
+        return
+    }
 }
 
 extension FavoritesViewController: FavoriteWordListDelegate {

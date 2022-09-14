@@ -8,6 +8,7 @@
 import Foundation
 
 class WordListDataModel {
+    let defaults = UserDefaults.standard
     let words: [String]
     
     init(){

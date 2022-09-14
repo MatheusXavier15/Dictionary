@@ -30,13 +30,16 @@ class FavoritesDataModel {
     }
     
     func createRegister(word: String) throws {
-        let newPoint = NSManagedObject(entity: favEntity, insertInto: managedContext)
-        newPoint.setValue(word, forKey: "word")
-        
-        do {
-            try managedContext.save()
-        } catch let error {
-            throw error
+        let alreadyExists = try? self.fetchRegister(withWord: word)
+        if alreadyExists == nil {
+            let newPoint = NSManagedObject(entity: favEntity, insertInto: managedContext)
+            newPoint.setValue(word, forKey: "word")
+            
+            do {
+                try managedContext.save()
+            } catch let error {
+                throw error
+            }
         }
     }
     
