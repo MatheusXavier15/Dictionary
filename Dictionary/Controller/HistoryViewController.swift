@@ -11,9 +11,19 @@ class HistoryViewController: UIViewController{
 
     // MARK: -> Properties
     
-    var words: [WordHistory]?
+    var words: [HistoryModel]?
     private let tableView = UITableView()
     private let reusableIdentifier = "HistoryTableViewCell"
+    
+    private let noHistoryWords: UILabel =  {
+       let lb = UILabel()
+        lb.text = "No words in history yet! \n Empty history word list"
+        lb.font = .systemFont(ofSize: 16, weight: .bold)
+        lb.numberOfLines = 0
+        lb.textAlignment = .center
+        lb.textColor = .black
+        return lb
+    }()
     
     // MARK: -> LifeCycle
     
@@ -26,19 +36,9 @@ class HistoryViewController: UIViewController{
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        let buttonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(handleDeleteAll))
-        self.navigationItem.rightBarButtonItem = buttonItem
-        self.words = try? HistoryDataModel.shared.fetchRegisters()
-        self.configureTableView()
-        self.tableView.reloadData()
-    }
-    
-    // MARK: -> Selectors
-    
-    @objc func handleDeleteAll(){
-        makeAlertDialog(title: "Delete all history?", message: "Do you want to delete all content in history?") {
-            try? HistoryDataModel.shared.deleteAllRegisters()
-            self.words = try? HistoryDataModel.shared.fetchRegisters()
+        HistoryDataModel().fetchRegisters { result in
+            self.words = result
+            self.configureTableView()
             self.tableView.reloadData()
         }
     }
@@ -75,13 +75,18 @@ class HistoryViewController: UIViewController{
 extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if self.words?.count == 0 {
+            tableView.backgroundView = noHistoryWords
+        } else {
+            tableView.backgroundView = nil
+        }
         return self.words?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: self.reusableIdentifier, for: indexPath) as! HistoryTableViewCell
-        cell.word = words?[indexPath.row].word
-        cell.state = words?[indexPath.row].favorite ?? false ? .fav : .normal
+        let word = words?[indexPath.row]
+        cell.word = word
         cell.delegate = self
         return cell
     }
@@ -96,11 +101,13 @@ extension HistoryViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension HistoryViewController: HistoryListDelegate {
-    func handleDelete(word: String) {
-        makeAlertDialog(title: "Delete \"\(word)\" from history?", message: "Do you want to delete the word \"\(word)\" from your history?") {
-            try? HistoryDataModel.shared.deleteRegister(withWord: word)
-            self.words = try? HistoryDataModel.shared.fetchRegisters()
-            self.tableView.reloadData()
+    func handleDelete(word: HistoryModel) {
+        makeAlertDialog(title: "Delete \"\(word.word)\" from history?", message: "Do you want to delete the word \"\(word.word)\" from your history?") {
+            HistoryDataModel().deleteRegister(id: word.id!)
+            HistoryDataModel().fetchRegisters { result in
+                self.words = result
+                self.tableView.reloadData()
+            }
         }
     }
 }

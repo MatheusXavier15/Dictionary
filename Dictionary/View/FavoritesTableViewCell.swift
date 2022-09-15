@@ -31,9 +31,9 @@ class FavoritesTableViewCell: UITableViewCell {
         }
     }
     
-    var word: String? {
+    var word: FavoriteModel? {
         didSet {
-            self.label.text = word
+            self.label.text = word?.word
         }
     }
     
@@ -70,9 +70,9 @@ class FavoritesTableViewCell: UITableViewCell {
     @objc func handleToggleBtn(){
         self.favBtn.setImage(UIImage(systemName: state == .normal ? "heart.fill" : "heart"), for: .normal)
         if state == .normal {
-            try? FavoritesDataModel.shared.createRegister(word: word ?? "")
+            FavoritesDataModel.uploadFavorite(word: word!.word)
         } else {
-            try? FavoritesDataModel.shared.deleteRegister(withWord: word ?? "")
+            FavoritesDataModel().deleteRegister(id: (word?.id)!)
         }
         self.state = self.state == .fav ? .normal : .fav
         self.delegate.handleFavorite()

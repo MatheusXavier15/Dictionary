@@ -9,11 +9,11 @@ import Foundation
 import UIKit
 
 protocol HistoryListDelegate: AnyObject {
-    func handleDelete(word: String)
+    func handleDelete(word: HistoryModel)
 }
 
 class HistoryTableViewCell: UITableViewCell {
-    
+     
     // MARK: -> Properties
     
     weak var delegate: HistoryListDelegate!
@@ -31,11 +31,23 @@ class HistoryTableViewCell: UITableViewCell {
         }
     }
     
-    var word: String? {
+    var word: HistoryModel? {
         didSet {
-            self.label.text = word
+            self.label.text = word?.word
+            FavoritesDataModel().verifyIfItsFavorite(word: word!.word) { result, fav in
+                if result {
+                    self.state = .fav
+                    if let fav = fav {
+                        self.id = fav.id
+                    }
+                } else {
+                    self.state = .normal
+                }
+            }
         }
     }
+    
+    var id: String?
     
     private let label: UILabel = {
        let lb = UILabel()
@@ -78,16 +90,15 @@ class HistoryTableViewCell: UITableViewCell {
     @objc func handleToggleFavBtn(){
         self.favBtn.setImage(UIImage(systemName: state == .normal ? "heart.fill" : "heart"), for: .normal)
         if state == .normal {
-            try? FavoritesDataModel.shared.createRegister(word: word ?? "")
+            FavoritesDataModel.uploadFavorite(word: word!.word)
         } else {
-            try? FavoritesDataModel.shared.deleteRegister(withWord: word ?? "")
+            FavoritesDataModel().deleteRegister(id: id!)
         }
         self.state = self.state == .fav ? .normal : .fav
     }
     
     @objc func handleToggleDeleteBtn(){
-        
-        self.delegate.handleDelete(word: word ?? "")
+        self.delegate.handleDelete(word: word!)
     }
     
     // MARK: -> Configure/Helpers

@@ -10,9 +10,19 @@ import UIKit
 class FavoritesViewController: UIViewController {
     // MARK: -> Properties
     
-    var words: [Favorite]?
+    var words: [FavoriteModel]?
     private let tableView = UITableView()
     private let reusableIdentifier = "FavoritesTableCell"
+    
+    private let noFavWords: UILabel =  {
+       let lb = UILabel()
+        lb.text = "No favorite words yet! \n Empty favorites word list"
+        lb.font = .systemFont(ofSize: 16, weight: .bold)
+        lb.numberOfLines = 0
+        lb.textAlignment = .center
+        lb.textColor = .black
+        return lb
+    }()
     
     // MARK: -> LifeCycle
     
@@ -25,9 +35,11 @@ class FavoritesViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.words = try? FavoritesDataModel.shared.fetchRegisters()
-        self.configureTableView()
-        self.tableView.reloadData()
+        FavoritesDataModel().fetchFavorites { result in
+            self.words = result
+            self.configureTableView()
+            self.tableView.reloadData()
+        }
     }
     
     // MARK: -> Configure/Helpers
@@ -49,13 +61,18 @@ class FavoritesViewController: UIViewController {
 extension FavoritesViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if self.words?.count == 0 {
+            tableView.backgroundView = noFavWords
+        } else {
+            tableView.backgroundView = nil
+        }
         return self.words?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: self.reusableIdentifier, for: indexPath) as! FavoritesTableViewCell
         cell.delegate = self
-        cell.word = words?[indexPath.row].word
+        cell.word = words?[indexPath.row]
         cell.state = .fav
         return cell
     }
@@ -71,7 +88,9 @@ extension FavoritesViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension FavoritesViewController: FavoriteWordListDelegate {
     func handleFavorite() {
-        self.words = try? FavoritesDataModel.shared.fetchRegisters()
-        self.tableView.reloadData()
+        FavoritesDataModel().fetchFavorites { result in
+            self.words = result
+            self.tableView.reloadData()
+        }
     }
 }

@@ -32,10 +32,20 @@ class WordListTableViewCell: UITableViewCell {
     var word: String? {
         didSet {
             self.label.text = word
+            FavoritesDataModel().verifyIfItsFavorite(word: word!) { result, fav in
+                if result {
+                    self.state = .fav
+                    if let fav = fav {
+                        self.id = fav.id
+                    }
+                } else {
+                    self.state = .normal
+                }
+            }
         }
     }
     
-//    private var favStatus: WordFavStatus?
+    private var id: String?
     
     private let label: UILabel = {
        let lb = UILabel()
@@ -70,9 +80,9 @@ class WordListTableViewCell: UITableViewCell {
     @objc func handleToggleBtn(){
         self.favBtn.setImage(UIImage(systemName: state == .normal ? "heart.fill" : "heart"), for: .normal)
         if state == .normal {
-            try? FavoritesDataModel.shared.createRegister(word: word ?? "")
+            FavoritesDataModel.uploadFavorite(word: word!)
         } else {
-            try? FavoritesDataModel.shared.deleteRegister(withWord: word ?? "")
+            FavoritesDataModel().deleteRegister(id: id!)
         }
         self.state = self.state == .fav ? .normal : .fav
     }

@@ -58,7 +58,6 @@ extension WordListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: self.reusableIdentifier, for: indexPath) as! WordListTableViewCell
         cell.word = wordList.words[indexPath.row]
-        cell.state = try? FavoritesDataModel.shared.fetchRegister(withWord: wordList.words[indexPath.row]) != nil ? .fav : .normal
         return cell
     }
     
@@ -67,12 +66,7 @@ extension WordListViewController: UITableViewDelegate, UITableViewDataSource {
         let word = wordList.words[indexPath.row]
         wordPages.initialIndex = indexPath.row
         wordPages.wordsContent = wordList.words
-        do {
-            let fav = try? FavoritesDataModel.shared.fetchRegister(withWord: word)
-            try HistoryDataModel.shared.createRegister(wordHistory: WordHistory(word: word, fav: fav != nil ? true : false, date: Date()))
-        } catch {
-            return
-        }
+        HistoryDataModel.uploadHistory(word: word)
         navigationController?.pushViewController(wordPages, animated: true)
         return
     }

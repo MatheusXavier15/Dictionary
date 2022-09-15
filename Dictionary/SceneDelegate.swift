@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseCore
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -13,10 +14,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        
+        FirebaseApp.configure()
         guard let scene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: scene)
-        window?.rootViewController = TabBarViewController()
+        window?.rootViewController = AuthDataModel.shared.userSession == nil ? UINavigationController(rootViewController: LoginViewController()) : TabBarViewController()
         window?.makeKeyAndVisible()
     }
 
