@@ -59,8 +59,8 @@ class WordListTableViewCell: UITableViewCell {
     private lazy var favBtn: UIButton = {
         let btn = UIButton(type: .system)
         btn.setImage(UIImage(systemName: "heart"), for: .normal)
-        btn.setDimensions(height: 14, width: 16)
-        btn.addTarget(self, action: #selector(handleToggleBtn), for: .touchUpInside)
+        btn.setDimensions(height: 16, width: 19)
+        btn.addTarget(self, action: #selector(handleToggleFavBtn), for: .touchUpInside)
         return btn
     }()
     
@@ -77,7 +77,7 @@ class WordListTableViewCell: UITableViewCell {
     
     // MARK: -> Selectors
     
-    @objc func handleToggleBtn(){
+    @objc func handleToggleFavBtn(){
         self.favBtn.setImage(UIImage(systemName: state == .normal ? "heart.fill" : "heart"), for: .normal)
         if state == .normal {
             FavoritesDataModel.uploadFavorite(word: word!)
